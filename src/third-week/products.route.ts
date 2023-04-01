@@ -10,8 +10,12 @@ router.get('/', (req: Request, res: Response) => {
 
 router.get('/:id', (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    const product = productsService.getById(id);
-    return res.send(product);
+    try{
+        const product = productsService.getById(id);
+        return res.send(product);
+    }catch(error: any) {
+       return res.status(404).send({ mesage: error.message });
+    }
 });
 
 router.post('/', (req: Request, res: Response) => {
@@ -19,7 +23,7 @@ router.post('/', (req: Request, res: Response) => {
        productsService.create(req.body);
        return res.send({ message: 'Produto criado com sucesso'});
    }catch(error: any){
-        return res.send({ message: error.message});
+        return res.status(400).send({ message: error.message});
    }
 });
 

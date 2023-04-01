@@ -47,7 +47,11 @@ class ProductsService {
 
     getById(id: Number) {
         const product = this.products.find((pd) => pd.id === id);
-        return product;
+        if(!product) {
+            throw new Error ('Produto não encontrado');
+        }else {
+            return product;
+        }
     }
 
     create(product: Product) {

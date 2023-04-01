@@ -5,4 +5,4 @@ export interface Product {
     price: Number,
     quantity: Number,
     inStock?: Boolean
-}
+};
