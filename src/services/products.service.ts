@@ -51,7 +51,12 @@ class ProductsService {
     }
 
     create(product: Product) {
-        this.products.push(product);
+        const indexProduct = this.products.findIndex(prod => prod.id === product.id);
+        if (indexProduct != -1) {
+            throw new Error ('Produto já cadastrado');
+        } else {
+            this.products.push(product);
+        }
     }
 
     update(id: Number, product: Product) {

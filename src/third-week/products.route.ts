@@ -15,16 +15,12 @@ router.get('/:id', (req: Request, res: Response) => {
 });
 
 router.post('/', (req: Request, res: Response) => {
-    const products = productsService.getAll();
-    const indexProduct = products.findIndex(product => {
-        return product.id === req.body.id
-    });
-    if (indexProduct != -1) {
-        return res.status(404).send({ message: 'Produto já cadastrado' });
-    } else {
-        productsService.create(req.body);
-        return res.status(201).send(req.body);
-    }
+   try{
+       productsService.create(req.body);
+       return res.send({ message: 'Produto criado com sucesso'});
+   }catch(error: any){
+        return res.send({ message: error.message});
+   }
 });
 
 router.put('/:id', (req: Request, res: Response) => {
