@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import productsService from '../services/products.service';
+import productsService from '../fourth-week/services/products.service';
 
 const router = Router();
 
