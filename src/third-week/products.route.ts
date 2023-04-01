@@ -10,21 +10,23 @@ router.get('/', (req: Request, res: Response) => {
 
 router.get('/:id', (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    try{
+    try {
         const product = productsService.getById(id);
         return res.send(product);
-    }catch(error: any) {
-       return res.status(404).send({ mesage: error.message });
+    } catch (error: any) {
+        return res.status(error.getStatusCode()).send({
+            message: error.message
+        });
     }
 });
 
 router.post('/', (req: Request, res: Response) => {
-   try{
-       productsService.create(req.body);
-       return res.send({ message: 'Produto criado com sucesso'});
-   }catch(error: any){
-        return res.status(400).send({ message: error.message});
-   }
+    try {
+        productsService.create(req.body);
+        return res.send({ message: 'Produto criado com sucesso' });
+    } catch (error: any) {
+        return res.status(error.getStatusCode()).send({ message: error.message });
+    }
 });
 
 router.put('/:id', (req: Request, res: Response) => {
@@ -33,7 +35,7 @@ router.put('/:id', (req: Request, res: Response) => {
         productsService.update(productId, req.body);
         return res.send({ message: 'Produto editado com sucesso' });
     } catch (error: any) {
-        return res.send({ message: error.message });
+        return res.status(error.getStatusCode()).send({ message: error.message });
     }
 });
 
@@ -43,7 +45,7 @@ router.delete('/:id', (req: Request, res: Response) => {
         productsService.delete(productId);
         return res.send({ message: 'Produto deletado com sucesso' });
     } catch (error: any) {
-        return res.status(404).send({ message: error.message });
+        return res.status(error.getStatusCode()).send({ message: error.message });
     }
 });
 

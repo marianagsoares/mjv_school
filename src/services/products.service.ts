@@ -1,3 +1,4 @@
+import { BadRequestError, NotFoundError } from "../errors";
 import { Product } from "../models/products.model";
 
 class ProductsService {
@@ -48,7 +49,7 @@ class ProductsService {
     getById(id: Number) {
         const product = this.products.find((pd) => pd.id === id);
         if(!product) {
-            throw new Error ('Produto não encontrado');
+            throw new NotFoundError ('Produto não encontrado');
         }else {
             return product;
         }
@@ -57,7 +58,7 @@ class ProductsService {
     create(product: Product) {
         const indexProduct = this.products.findIndex(prod => prod.id === product.id);
         if (indexProduct != -1) {
-            throw new Error ('Produto já cadastrado');
+            throw new BadRequestError ('Produto já cadastrado');
         } else {
             this.products.push(product);
         }
@@ -66,7 +67,7 @@ class ProductsService {
     update(id: Number, product: Product) {
         const productIndex = this.products.findIndex((prod) => prod.id === id);
         if (productIndex === -1) {
-            throw new Error('Produto não encontrado');
+            throw new NotFoundError ('Produto não encontrado');
         } else {
             this.products[productIndex] = product;
         }
@@ -75,7 +76,7 @@ class ProductsService {
     delete(id: Number) {
         const productIndex = this.products.findIndex((prod) => prod.id === id);
         if (productIndex === -1) {
-            throw new Error('Produto não encontrado');
+            throw new NotFoundError ('Produto não encontrado');
         } else {
             this.products.splice(productIndex, 1);
         }
