@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import routes from './routers/index';
+import routes from './index';
 import connection from './config/databaseUrl';
 
 const app = express();
@@ -14,7 +14,7 @@ const port = 3050;
 connection.then(() =>{
     console.log('Database connected')
     app.listen(port, () =>{
-        console.log('App running')
+        console.log('Server running')
     });
 }).catch(error => console.log(error));
 
