@@ -2,23 +2,25 @@ import { BadRequestError, NotFoundError, Unauthorized } from "../errors";
 import { User } from "../models/user.model";
 import userRepository from "../repositories/user.repository";
 import bcrypt from "bcrypt";
+import  generateToken  from "../utils/generateToken.utils";
+import '../config/env';
 
 class UserService {
 
-   async getAll() {
+    async getAll() {
         return userRepository.getAll();
     }
 
-   async getById(id: string) {
+    async getById(id: string) {
         let userFound;
-        try{
+        try {
             userFound = await userRepository.getById(id);
-        }catch {
+        } catch {
             throw new BadRequestError('Id inválido');
         }
 
-        if(userFound)
-        return userFound;
+        if (userFound)
+            return userFound;
 
         throw new NotFoundError('Usuário não encontrado');
     }
@@ -48,16 +50,28 @@ class UserService {
         }
     }
 
-    async authenticate(email: string, password: string){
+    async authenticate(email: string, password: string) {
         const user = await userRepository.getByEmail(email);
+        console.log(user);
 
-        if(!user) throw new NotFoundError ('Usuário não encontrado');
+        if (!user) throw new NotFoundError('Usuário não encontrado');
 
-        const result = await bcrypt.compare(password, user.password);
+        try {
+            const result = await bcrypt.compare(password, user.password);
+            console.log(result, "0")
 
-        if(result) return user;
+            const accessToken = generateToken({ _id: user.id })
 
-        if(!result) throw new Unauthorized ('Falha na autenticação');
+            console.log(result, "1")
+            console.log(accessToken, "2")
+
+            return ({
+                message: 'Autenticado',
+                accessToken
+            });
+        } catch (error) {
+            throw new Unauthorized('Autenticação falhou');
+        }
     }
 }
 

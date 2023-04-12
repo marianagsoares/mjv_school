@@ -37,7 +37,7 @@ router.post('/authenticate', async (req: Request, res: Response) => {
     try {
         const token = await userService.authenticate(email, password);
 
-        res.send(token);
+      return  res.send(token);
     }catch(error: any){
         return res.status(error.getStatusCode()).send( { message: error.message});
     }

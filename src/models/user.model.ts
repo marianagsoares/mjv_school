@@ -4,7 +4,6 @@ import moment from 'moment';
 export const userSchema = new Schema({
     email: {
         type: String,
-        lowercase: true,
         required: true
     },
     password: {
