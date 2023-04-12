@@ -1,4 +1,4 @@
-import { BadRequestError, NotFoundError } from "../errors";
+import { BadRequestError, NotFoundError, Unauthorized } from "../errors";
 import { User } from "../models/user.model";
 import userRepository from "../repositories/user.repository";
 import bcrypt from "bcrypt";
@@ -46,6 +46,18 @@ class UserService {
         } catch (error) {
             throw new BadRequestError('Não foi possível criar o usuário');
         }
+    }
+
+    async authenticate(email: string, password: string){
+        const user = await userRepository.getByEmail(email);
+
+        if(!user) throw new NotFoundError ('Usuário não encontrado');
+
+        const result = await bcrypt.compare(password, user.password);
+
+        if(result) return user;
+
+        if(!result) throw new Unauthorized ('Falha na autenticação');
     }
 }
 
