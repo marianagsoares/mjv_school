@@ -7,10 +7,10 @@ class ProductRepository{
     }
 
     getById(id: string) {
-        return Product.findOne({ id});
+        return Product.findOne({ id });
     }
 
-    create(product: Product){
+    create(product: Product) {
         return Product.create(product);
     }
 
@@ -18,7 +18,7 @@ class ProductRepository{
         return Product.updateOne({ id }, { $set: product});
     }
 
-    delete(id: string){
+    delete(id: string) {
         return Product.deleteOne({ id });
     }
 }
