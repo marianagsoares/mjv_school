@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import healthRouter from './health.router';
-import storeRouter from './routers/products.route';
-import userRouter from './routers/user.route';
+import storeRouter from './routers/products.router';
+import userRouter from './routers/user.router';
 
 const router = Router();
 

@@ -3,6 +3,11 @@ import userService from '../services/user.service';
 
 const router = Router();
 
+router.get('/', async (req: Request, res: Response) => {
+    const users = await userService.getAll();
+    return res.send(users);
+});
+
 router.get('/:id', async (req: Request, res: Response) => {
     const id = req.params.id;
     try {
@@ -18,9 +23,23 @@ router.get('/:id', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     try {
         await userService.create(req.body);
+
         return res.send({ message: 'Usuário criado com sucesso' });
+
     } catch (error: any) {
         return res.status(error.getStatusCode()).send({ message: error.message });
+    }
+});
+
+router.post('/authenticate', async (req: Request, res: Response) => {
+    const { email, password} = req.body;
+    
+    try {
+        const token = await userService.authenticate(email, password);
+
+        res.send(token);
+    }catch(error: any){
+        return res.status(error.getStatusCode()).send( { message: error.message});
     }
 });
 
