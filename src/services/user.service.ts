@@ -52,18 +52,13 @@ class UserService {
 
     async authenticate(email: string, password: string) {
         const user = await userRepository.getByEmail(email);
-        console.log(user);
 
         if (!user) throw new NotFoundError('Usuário não encontrado');
 
         try {
-            const result = await bcrypt.compare(password, user.password);
-            console.log(result, "0")
+            await bcrypt.compare(password, user.password);
 
             const accessToken = generateToken({ _id: user.id })
-
-            console.log(result, "1")
-            console.log(accessToken, "2")
 
             return ({
                 message: 'Autenticado',
