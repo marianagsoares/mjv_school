@@ -1,14 +1,15 @@
 import { Request, Response, Router } from 'express';
 import userService from '../services/user.service';
+import auth from '../middleware/auth.middleware';
 
 const router = Router();
 
-router.get('/', async (req: Request, res: Response) => {
+router.get('/', auth, async (req: Request, res: Response) => {
     const users = await userService.getAll();
     return res.send(users);
 });
 
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', auth, async (req: Request, res: Response) => {
     const id = req.params.id;
     try {
         const user = await userService.getById(id);
